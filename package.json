@@ -24,6 +24,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "babel-plugin-import": "^1.11.0",
     "react-app-rewired": "^2.1.1"
   }
 }
