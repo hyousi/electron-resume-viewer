@@ -6,7 +6,12 @@ let mainWindow;
 
 function createWindow() {
     // create browser window
-    mainWindow = new BrowserWindow({ width: 800, height: 600 });
+    mainWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true // make require available for render
+        },
+        width: 800, height: 600
+    });
 
     // load index.html of the app
     const pkg = { DEV: true };
