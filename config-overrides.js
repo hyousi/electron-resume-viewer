@@ -1,7 +1,18 @@
-const { injectBabelPlugin } = require('react-app-rewired');
+// source: https://github.com/ant-design/ant-design-mobile/issues/3094
+const {
+    addLessLoader,
+    fixBabelImports,
+    override
+} = require("customize-cra");
 
-module.exports = function override(config, env) {
-    config = injectBabelPlugin(['import', { libraryName: 'antd',
-        libraryDirectory: 'es', style: 'css' }], config);
-    return config;
+module.exports = {
+    webpack: override(
+        addLessLoader({
+            javascriptEnabled: true
+        }),
+        fixBabelImports("babel-plugin-import", {
+            libraryName: "antd-mobile",
+            style: true
+        })
+    )
 };
