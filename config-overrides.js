@@ -11,7 +11,7 @@ module.exports = {
             javascriptEnabled: true
         }),
         fixBabelImports("babel-plugin-import", {
-            libraryName: "antd-mobile",
+            libraryName: "antd",
             style: true
         })
     )

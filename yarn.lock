@@ -1279,6 +1279,18 @@ address@1.0.3, address@^1.0.1:
   resolved "http://registry.npm.taobao.org/address/download/address-1.0.3.tgz#b5f50631f8d6cec8bd20c963963afb55e06cbce9"
   integrity sha1-tfUGMfjWzsi9IMljljr7VeBsvOk=
 
+ag-grid-community@^20.2.0:
+  version "20.2.0"
+  resolved "http://registry.npm.taobao.org/ag-grid-community/download/ag-grid-community-20.2.0.tgz#22f26d53e309b51a156878d180c9ec6f16bc6403"
+  integrity sha1-IvJtU+MJtRoVaHjRgMnsbxa8ZAM=
+
+ag-grid-react@^20.2.0:
+  version "20.2.0"
+  resolved "http://registry.npm.taobao.org/ag-grid-react/download/ag-grid-react-20.2.0.tgz#b2fd24950a31fc491a1c79ce92657b8aa7582c45"
+  integrity sha1-sv0klQox/EkaHHnOkmV7iqdYLEU=
+  dependencies:
+    prop-types "^15.6.2"
+
 ajv-errors@^1.0.0:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/ajv-errors/download/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
