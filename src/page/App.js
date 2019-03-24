@@ -1,12 +1,12 @@
 import React from 'react'
-import { Button, Col, Form, Input, Row, Table, Typography } from 'antd'
+import { Button, Card, Col, Form, Input, Row, Table, Checkbox } from 'antd'
 import columnDefs from './table-config';
 import '../style/App.css';
 
-/** Features:
- * TODO 1. 根据checkbox展示数据
+/**
  *
  * FIXME 1. 数据展示样式
+ *       2. 代码重构
  *
  * */
 
@@ -18,6 +18,7 @@ class App extends React.Component {
       uuid: 0,
       columnDefs: null,
       rowData: null,
+      keys: [],
       note: null,
     }
   }
@@ -50,11 +51,15 @@ class App extends React.Component {
     console.log("after: " + record.note);
     console.log(this.state.rowData);
     event.preventDefault();
+  }
 
+  handleCheckboxOn = (checkedValues) => {
+    console.log(checkedValues);
+    this.setState({keys: checkedValues});
   }
 
   formItems = (uuid) => {
-    const row = this.state.rowData.find(x => x.uuid === uuid);
+    const row = this.state.rowData.find(x => x.uuid === this.state.uuid);
     let items = [];
 
     for (const [key, val] of Object.entries(row)) {
@@ -68,7 +73,34 @@ class App extends React.Component {
     return items;
   }
 
+  cardItems = (uuid) => {
+    const row = this.state.rowData.find(x => x.uuid === this.state.uuid);
+    let items = [];
 
+    for (const key of this.state.keys) {
+      items.push(
+        <div><strong>{key}</strong>{row[key]}</div>
+      )
+    }
+
+    return items;
+  }
+
+  checkboxItems = () => {
+    let keys = [];
+    let checkboxItems = [];
+
+    for (const row of this.state.rowData) {
+      keys = Array.from(new Set(keys.concat(Object.keys(row))));
+    }
+
+    for (const k of keys) {
+      checkboxItems.push(
+        <Col span={4}><Checkbox value={k}>{k}</Checkbox></Col>
+      )
+    }
+    return checkboxItems;
+  }
 
   render () {
     if (this.state.status === 0) {
@@ -81,22 +113,41 @@ class App extends React.Component {
           <div className="focus">
 
               <Row gutter={16}>
+                {/*Left: Content */}
                 <Col span={12}>
-                  <Form>
-                  { this.formItems(this.state.uuid) }
-                  </Form>
+                  <Card title="项目经历" style={{ minHeight: '500px'}}>
+                    {this.state.rowData.find(x => x.uuid === this.state.uuid).content}
+                  </Card>
                 </Col>
+                {/* Right: Focus & Notes */}
                 <Col span={12}>
+                  <Card title="个人信息" style={{ minHeight: '300px'}}>
+                    {this.cardItems(this.state.uuid)}
+                  </Card>
                   <Form onSubmit={this.handleSubmit}>
                     <Form.Item label="备注">
-                      <Input.TextArea value={this.state.note} onChange={this.handleChange}/>
-                      <Input type="submit" value="Submit" />
+                      <Input.TextArea value={this.state.note}
+                                      onChange={this.handleChange}
+                                      style={{ minHeight: '100px'}}/>
+                      <Input type="submit" value="保存" />
                     </Form.Item>
                   </Form>
                 </Col>
               </Row>
           </div>
 
+          {/* Checkbox */}
+          <div id="checkbox">
+            <Checkbox.Group style={{ width: '100%'}}
+                            onChange={this.handleCheckboxOn}>
+              <Row>
+                {this.checkboxItems()}
+              </Row>
+            </Checkbox.Group>
+          </div>
+
+
+          {/*Table */}
           <div className="table">
             <Table columns={columnDefs}
                    dataSource={this.state.rowData}
@@ -110,7 +161,6 @@ class App extends React.Component {
                    rowClassName={(record) => {
                      return record.uuid === this.state.uuid? 'activate-row': ''
                    }}
-
             />
           </div>
         </div>
