@@ -9,8 +9,7 @@ import columnDefs from './table-config';
  *         - 点击保存后，更新数据
  * TODO 3. 根据checkbox展示数据
  *
- * FIXME 1. "Each child in a list should have a unique "key" prop."
- * FIXME 2. 数据展示样式
+ * FIXME 1. 数据展示样式
  *
  * */
 
@@ -58,7 +57,7 @@ class App extends React.Component {
 
     for (const [key, val] of Object.entries(row)) {
       items.push(
-        <Form.Item label={key}>
+        <Form.Item label={key} key={key + val}>
           <Input value={val} />
         </Form.Item>
       )
@@ -99,7 +98,7 @@ class App extends React.Component {
           <div className="table">
             <Table columns={columnDefs}
                    dataSource={this.state.rowData}
-              // scroll={{ x: 600, y: 300 }}
+                   rowKey={record => record.uuid}
                    size="small"
                    onRow={(record) => ({
                      onClick: () => {
