@@ -4,10 +4,7 @@ import columnDefs from './table-config';
 
 /** Features:
  * TODO 1. table中选中行，高亮
- * TODO 2. 保存备注
- *         - 备注框的双向绑定
- *         - 点击保存后，更新数据
- * TODO 3. 根据checkbox展示数据
+ * TODO 2. 根据checkbox展示数据
  *
  * FIXME 1. 数据展示样式
  *
@@ -47,8 +44,13 @@ class App extends React.Component {
   }
 
   handleSubmit = (event) => {
-    console.log("You have submit: " + this.state.note);
+    const record = this.state.rowData.find(x => x.uuid === this.state.uuid);
+    console.log("before: " + record.note);
+    record.note = this.state.note;
+    console.log("after: " + record.note);
+    console.log(this.state.rowData);
     event.preventDefault();
+
   }
 
   formItems = (uuid) => {
