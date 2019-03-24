@@ -2,14 +2,15 @@ import React from 'react'
 import { Button, Col, Form, Input, Row, Table, Typography } from 'antd'
 import columnDefs from './table-config';
 
-/**
- * TODO Implement features:
- *      - 选中的行高亮
- *      - 保存备注（双向绑定）
+/** Features:
+ * TODO 1. table中选中行，高亮
+ * TODO 2. 保存备注
+ *         - 备注框的双向绑定
+ *         - 点击保存后，更新数据
+ * TODO 3. 根据checkbox展示数据
  *
- * FIXME Optimize:
- *      - 表格样式
- *      - 个人信息Card样式
+ * FIXME 1. "Each child in a list should have a unique "key" prop."
+ * FIXME 2. 数据展示样式
  *
  * */
 
@@ -21,6 +22,7 @@ class App extends React.Component {
       uuid: 0,
       columnDefs: null,
       rowData: null,
+      note: null,
     }
   }
 
@@ -41,6 +43,15 @@ class App extends React.Component {
     })
   }
 
+  handleChange = (event) => {
+    this.setState({note: event.target.value});
+  }
+
+  handleSubmit = (event) => {
+    console.log("You have submit: " + this.state.note);
+    event.preventDefault();
+  }
+
   formItems = (uuid) => {
     const row = this.state.rowData.find(x => x.uuid === uuid);
     let items = [];
@@ -56,14 +67,7 @@ class App extends React.Component {
     return items;
   }
 
-  handleSave = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, notes) => {
-      if (!err) {
-        console.log('Received notes:', notes);
-      }
-    })
-  }
+
 
   render () {
     if (this.state.status === 0) {
@@ -74,23 +78,22 @@ class App extends React.Component {
       return (
         <div>
           <div className="focus">
-            <Form>
+
               <Row gutter={16}>
                 <Col span={12}>
+                  <Form>
                   { this.formItems(this.state.uuid) }
+                  </Form>
                 </Col>
                 <Col span={12}>
-                  <Form onSubmit={this.handleSave}>
+                  <Form onSubmit={this.handleSubmit}>
                     <Form.Item label="备注">
-                      <Input.TextArea autosize={{minRows: 10}} value={this.state.rowData.uuid.note}/>
-                    </Form.Item>
-                    <Form.Item>
-                      <Button>保存</Button>
+                      <Input.TextArea value={this.state.note} onChange={this.handleChange}/>
+                      <Input type="submit" value="Submit" />
                     </Form.Item>
                   </Form>
                 </Col>
               </Row>
-            </Form>
           </div>
 
           <div className="table">
