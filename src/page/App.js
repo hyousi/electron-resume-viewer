@@ -1,10 +1,10 @@
 import React from 'react'
 import { Button, Col, Form, Input, Row, Table, Typography } from 'antd'
 import columnDefs from './table-config';
+import '../style/App.css';
 
 /** Features:
- * TODO 1. table中选中行，高亮
- * TODO 2. 根据checkbox展示数据
+ * TODO 1. 根据checkbox展示数据
  *
  * FIXME 1. 数据展示样式
  *
@@ -106,7 +106,12 @@ class App extends React.Component {
                      onClick: () => {
                        this.setState({uuid: record.uuid})
                      },
-                   })} />
+                   })}
+                   rowClassName={(record) => {
+                     return record.uuid === this.state.uuid? 'activate-row': ''
+                   }}
+
+            />
           </div>
         </div>
       )
