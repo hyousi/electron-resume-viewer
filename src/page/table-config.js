@@ -1,5 +1,3 @@
-import React from 'react';
-
 const columns = [
     {
         title: 'Full Name', width: 100, dataIndex: 'name', key: 'name',

@@ -1,70 +1,84 @@
 import React from 'react'
-import { Button } from 'antd';
-import ResumeTable from './ResumeTable';
-import ResumeEditor from './ResumeEditor';
-import '../style/App.css';
+import ResumeTable from './ResumeTable'
+import ResumeEditor from './ResumeEditor'
+import '../style/App.css'
+
+const { ipcRenderer, remote } = window.require('electron')
+const { dialog } = remote
+const fs = window.require('fs')
 
 class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       status: 0,
-      uuid: 0,
       rowData: null,
+      uuid: 0,
       content: null,
     }
-  }
 
-  handleClickOn = () => {
-    // 打开JSON文件
-    const { dialog } = window.require('electron').remote
-    dialog.showOpenDialog({ properties: ['openFile'] }, (filePaths) => {
-      if (filePaths == null) { return }
+    ipcRenderer.on('open', (event, filePath, data) => {
+      data = JSON.parse(data)
+      console.log(data)
+      this.setState({
+        status: 1,
+        rowData: data,
+        uuid: data[0].uuid,
+        content: data[0].content === null ? null : data[0].content,
+      })
+      console.log('load file success')
+    })
 
-      const fs = window.require('fs')
-      fs.readFile(filePaths[0], 'utf8', (err, data) => {
-
-        if (err) { alert(err) }
-
-        data = eval(data);
-        this.setState({
-          rowData: data,
-          uuid: data[0].uuid,
-          content: data[0].content,
-          status: 1, });
-      });
-    });
+    ipcRenderer.on('save', () => {
+      dialog.showSaveDialog({
+        filters: [
+          { name: 'JSON', extensions: ['json'] },
+        ],
+      }, (filePath) => {
+        if (!filePath) return
+        fs.writeFile(filePath, JSON.stringify(this.state.rowData), 'utf8',
+          (err) => {
+            if (err) throw err
+            alert('The file has been successfully saved.')
+          })
+      })
+    })
   }
 
   changeContent = (content) => {
-    const record = this.state.rowData.find(x => x.uuid === this.state.uuid);
-    record.content = content;
+    const record = this.state.rowData.find(x => x.uuid === this.state.uuid)
+    record.content = content
   }
 
   changeUUID = (uuid) => {
-    this.setState({uuid: uuid});
+    this.setState({ uuid: uuid })
   }
 
   render () {
-    if (this.state.status === 0) {
-      return (
-        <Button type="primary" onClick={this.handleClickOn}>Open</Button>
-      )
-    } else {
-      return (
-        <div>
-          <ResumeEditor
-            dataSource={this.state.rowData}
-            uuid={this.state.uuid}
-            changeContent={this.changeContent}
-          />
-          <ResumeTable
-            dataSource={this.state.rowData}
-            uuid={this.state.uuid}
-            changeUUID={this.changeUUID}
-          />
-        </div>
-      )
+    switch (this.state.status) {
+      case 0:
+        return (
+          <div>File empty</div>
+        )
+      case 1:
+        return (
+          <div>
+            <ResumeEditor
+              dataSource={this.state.rowData}
+              uuid={this.state.uuid}
+              changeContent={this.changeContent}
+            />
+            <ResumeTable
+              dataSource={this.state.rowData}
+              uuid={this.state.uuid}
+              changeUUID={this.changeUUID}
+            />
+          </div>
+        )
+      default :
+        return (
+          <div>File empty</div>
+        )
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Checkbox, Input, Card, Button } from 'antd'
+import { Row, Col, Checkbox, Input, Card, Typography } from 'antd'
 
 export default class ResumeEditor extends React.Component {
   constructor (props) {
@@ -32,9 +32,6 @@ export default class ResumeEditor extends React.Component {
 
   onChange = (e) => {
     this.setState({ content: e.target.value })
-  }
-
-  onSubmit = () => {
     this.props.changeContent(this.state.content)
   }
 
@@ -52,7 +49,7 @@ export default class ResumeEditor extends React.Component {
       </Col>,
     )
 
-    const cardItems = this.state.checkedValues.map((key, index) =>
+    const cardItems = this.state.checkedValues.map((key) =>
       <div>{key}: {record[key]}</div>,
     )
 
@@ -61,11 +58,11 @@ export default class ResumeEditor extends React.Component {
         <Row gutter={16}>
           {/*Left: Content */}
           <Col span={12}>
+            <Typography.Title level={4}>Content</Typography.Title>
             <Input.TextArea
               value={this.state.content}
               onChange={this.onChange}
               style={{ minHeight: '450px' }}/>
-            <Button onClick={this.onSubmit}>Save</Button>
           </Col>
           <Col span={12}>
             <Card title="个人信息" style={{ minHeight: '500px' }}>
