@@ -152,7 +152,7 @@ function createWindow () {
   })
 
   // load index.html of the app
-  const pkg = { DEV: true }
+  const pkg = { DEV: false }
 
   // check if in the dev mode
   if (pkg.DEV) {
