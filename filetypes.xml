@@ -1,0 +1,9 @@
+<application>
+  <component name="FileTypeManager" version="17">
+    <extensionMap>
+      <removed_mapping ext="csv" approved="true" type="CSV" />
+      <mapping ext="csv" type="PLAIN_TEXT" />
+      <removed_mapping ext="csv" approved="true" type="CSV" />
+    </extensionMap>
+  </component>
+</application>
