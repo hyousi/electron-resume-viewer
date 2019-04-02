@@ -3,7 +3,7 @@
   "description": "Simple Resume Viewer built with React and Electron",
   "version": "0.1.0",
   "private": true,
-  "main": "main.js",
+  "main": "./public/electron.js",
   "DEV": true,
   "homepage": ".",
   "repository": "https://github.com/hyousi/electron-resume-viewer",
@@ -13,20 +13,33 @@
     "url": "https://github.com/hyousi"
   },
   "license": "MIT",
-  "dependencies": {
-    "antd": "^3.15.1",
-    "less": "^3.9.0",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8"
+  "build": {
+    "mac": {
+      "category": "demo"
+    },
+    "win": {
+      "target": "portable"
+    },
+    "files": [
+      {
+        "from": "./",
+        "to": "./",
+        "filter": [
+          "**/*",
+          "!node_modules"
+        ]
+      }
+    ],
+    "directories": {
+      "buildResources": "public"
+    }
   },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject",
-    "electron-start": "electron ."
+    "electron-start": "NODE_ENV=development electron .",
+    "packager": "yarn build && rm -rf dist && electron-builder"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,6 +58,12 @@
     "electron-packager": "^13.1.1",
     "less-loader": "^4.1.0",
     "react-app-rewired": "^2.1.1",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.3",
+    "antd": "^3.15.1",
+    "less": "^3.9.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8"
   }
 }
