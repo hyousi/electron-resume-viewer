@@ -1,4 +1,5 @@
 # Electron Resume Viewer
+A simple resume view & edit tool based on electron.
 
 ## Development
 
